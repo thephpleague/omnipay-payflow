@@ -11,13 +11,14 @@
 
 namespace Tala\Billing\Payflow;
 
+use Tala\AbstractResponse;
 use Tala\Exception;
 use Tala\Exception\InvalidResponseException;
 
 /**
  * Payflow Response
  */
-class Response extends \Tala\Response
+class Response extends AbstractResponse
 {
     public function __construct($data)
     {
@@ -26,12 +27,20 @@ class Response extends \Tala\Response
         }
 
         parse_str($data, $this->data);
+    }
 
-        if ($this->data['RESULT'] > 0) {
-            throw new Exception($this->data['RESPMSG']);
-        }
+    public function isSuccessful()
+    {
+        return '0' === $this->data['RESULT'];
+    }
 
-        $this->message = $this->data['RESPMSG'];
-        $this->gatewayReference = $this->data['PNREF'];
+    public function getGatewayReference()
+    {
+        return $this->data['PNREF'];
+    }
+
+    public function getMessage()
+    {
+        return $this->data['RESPMSG'];
     }
 }
