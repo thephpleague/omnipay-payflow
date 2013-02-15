@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Omnipay\Billing\Payflow;
+namespace Omnipay\Payflow;
 
-use Omnipay\CreditCard;
+use Omnipay\Common\CreditCard;
 use Omnipay\GatewayTestCase;
 
 class ProGatewayTest extends GatewayTestCase

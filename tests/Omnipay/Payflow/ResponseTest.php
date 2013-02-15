@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Omnipay\Billing\Payflow;
+namespace Omnipay\Payflow;
 
 use Omnipay\TestCase;
 
 class ResponseTest extends TestCase
 {
     /**
-     * @expectedException Omnipay\Exception\InvalidResponseException
+     * @expectedException Omnipay\Common\Exception\InvalidResponseException
      */
     public function testConstructEmpty()
     {
