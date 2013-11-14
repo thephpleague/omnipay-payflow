@@ -3,7 +3,7 @@
 namespace Omnipay\Payflow;
 
 use Omnipay\Common\CreditCard;
-use Omnipay\GatewayTestCase;
+use Omnipay\Tests\GatewayTestCase;
 
 class ProGatewayTest extends GatewayTestCase
 {
