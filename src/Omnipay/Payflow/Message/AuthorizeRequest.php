@@ -53,6 +53,36 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('partner', $value);
     }
 
+    public function getOrderId()
+    {
+        return $this->getParameter('orderId');
+    }
+
+    public function setOrderId($value)
+    {
+        return $this->setParameter('orderId', $value);
+    }
+
+    public function getCustomerId()
+    {
+        return $this->getParameter('customerId');
+    }
+
+    public function setCustomerId($value)
+    {
+        return $this->setParameter('customerId', $value);
+    }
+
+    public function getComment2()
+    {
+        return $this->getParameter('comment2');
+    }
+
+    public function setComment2($value)
+    {
+        return $this->setParameter('comment2', $value);
+    }
+
     protected function getBaseData()
     {
         $data = array();
@@ -68,30 +98,62 @@ class AuthorizeRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('amount', 'card');
-        $this->getCard()->validate();
+
+        if (!$this->getTransactionReference()) {
+            $this->getCard()->validate();
+        }
 
         $data = $this->getBaseData();
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
         $data['COMMENT1'] = $this->getDescription();
+        $data['COMMENT2'] = $this->getComment2();
 
-        $data['ACCT'] = $this->getCard()->getNumber();
-        $data['EXPDATE'] = $this->getCard()->getExpiryDate('my');
-        $data['CVV2'] = $this->getCard()->getCvv();
-        $data['BILLTOFIRSTNAME'] = $this->getCard()->getFirstName();
-        $data['BILLTOLASTNAME'] = $this->getCard()->getLastName();
-        $data['BILLTOSTREET'] = $this->getCard()->getAddress1();
-        $data['BILLTOCITY'] = $this->getCard()->getCity();
-        $data['BILLTOSTATE'] = $this->getCard()->getState();
-        $data['BILLTOZIP'] = $this->getCard()->getPostcode();
-        $data['BILLTOCOUNTRY'] = $this->getCard()->getCountry();
+        if (!$this->getTransactionReference()) {
+            $data['ACCT'] = $this->getCard()->getNumber();
+            $data['EXPDATE'] = $this->getCard()->getExpiryDate('my');
+            $data['CVV2'] = $this->getCard()->getCvv();
+        } else {
+            $data['ORIGID'] = $this->getTransactionReference();
+        }
+
+        $data['EMAIL'] = $this->getCard()->getEmail();
+
+        $data['BILLTOEMAIL'] = $this->getCard()->getEmail();
+        $data['BILLTOFIRSTNAME'] = $this->getCard()->getBillingFirstName();
+        $data['BILLTOLASTNAME'] = $this->getCard()->getBillingLastName();
+        $data['BILLTOSTREET'] = $this->getCard()->getBillingAddress1();
+        $data['BILLTOCITY'] = $this->getCard()->getBillingCity();
+        $data['BILLTOSTATE'] = $this->getCard()->getBillingState();
+        $data['BILLTOZIP'] = $this->getCard()->getBillingPostcode();
+        $data['BILLTOCOUNTRY'] = $this->getCard()->getBillingCountry();
+
+        $data['SHIPTOFIRSTNAME'] = $this->getCard()->getShippingFirstName();
+        $data['SHIPTOLASTNAME'] = $this->getCard()->getShippingLastName();
+        $data['SHIPTOSTREET'] = $this->getCard()->getShippingAddress1();
+        $data['SHIPTOCITY'] = $this->getCard()->getShippingCity();
+        $data['SHIPTOSTATE'] = $this->getCard()->getShippingState();
+        $data['SHIPTOZIP'] = $this->getCard()->getShippingPostcode();
+        $data['SHIPTOCOUNTRY'] = $this->getCard()->getShippingCountry();
+
+        $data['ORDERID'] = $this->getOrderId();
+        $data['CUSTREF'] = $this->getCustomerId();
 
         return $data;
     }
 
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data)->send();
+        $data = $this->getData();
+        $postBody = '';
+        foreach ($data as $k => $v) {
+            if (!empty($postBody)) {
+                $postBody .= '&';
+            }
+            $postBody .= $k . '[' . strlen($v) . ']=' . $v;
+        }
+
+        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $postBody)->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
     }
