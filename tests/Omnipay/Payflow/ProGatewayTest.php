@@ -26,6 +26,22 @@ class ProGatewayTest extends GatewayTestCase
         );
     }
 
+    public function testAuthorizeByReferenceSuccess()
+    {
+        $this->setMockHttpResponse('PurchaseSuccess.txt');
+
+        $options = array(
+            'amount' => '10.00',
+            'transactionReference' => 'abc123',
+            'card' => new CreditCard(),
+        );
+
+        $response = $this->gateway->authorize($options)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals('V19R3EF62FBE', $response->getTransactionReference());
+    }
+
     public function testAuthorizeSuccess()
     {
         $this->setMockHttpResponse('PurchaseSuccess.txt');
