@@ -144,7 +144,6 @@ class AuthorizeRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $data = $this->getData();
         $postBody = '';
         foreach ($data as $k => $v) {
             if (!empty($postBody)) {
