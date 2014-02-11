@@ -53,6 +53,26 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('partner', $value);
     }
 
+    public function getComment1()
+    {
+        return $this->getDescription();
+    }
+
+    public function setComment1($value)
+    {
+        return $this->setDescription($value);
+    }
+
+    public function getComment2()
+    {
+        return $this->getParameter('comment2');
+    }
+
+    public function setComment2($value)
+    {
+        return $this->setParameter('comment2', $value);
+    }
+
     protected function getBaseData()
     {
         $data = array();
@@ -74,6 +94,8 @@ class AuthorizeRequest extends AbstractRequest
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
         $data['COMMENT1'] = $this->getDescription();
+        $data['COMMENT2'] = $this->getComment2();
+        $data['ORDERID'] = $this->getTransactionId();
 
         $data['ACCT'] = $this->getCard()->getNumber();
         $data['EXPDATE'] = $this->getCard()->getExpiryDate('my');

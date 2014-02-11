@@ -12,10 +12,45 @@ class AuthorizeRequestTest extends TestCase
         $this->request->initialize(
             array(
                 'amount' => '12.00',
-                'currency' => 'USD',
                 'card' => $this->getValidCard(),
             )
         );
+    }
+
+    public function testComment1()
+    {
+        // comment1 is alias for description
+        $this->assertSame($this->request, $this->request->setComment1('foo'));
+        $this->assertSame('foo', $this->request->getComment1());
+        $this->assertSame('foo', $this->request->getDescription());
+    }
+
+    public function testComment2()
+    {
+        $this->assertSame($this->request, $this->request->setComment2('bar'));
+        $this->assertSame('bar', $this->request->getComment2());
+    }
+
+    public function testGetData()
+    {
+        $card = $this->getValidCard();
+        $this->request->initialize(
+            array(
+                'amount' => '12.00',
+                'description' => 'things',
+                'comment2' => 'more things',
+                'card' => $card,
+                'transactionId' => '123',
+            )
+        );
+
+        $data = $this->request->getData();
+
+        $this->assertSame('C', $data['TENDER']);
+        $this->assertSame('12.00', $data['AMT']);
+        $this->assertSame('things', $data['COMMENT1']);
+        $this->assertSame('more things', $data['COMMENT2']);
+        $this->assertSame('123', $data['ORDERID']);
     }
 
     public function testEncodeData()
