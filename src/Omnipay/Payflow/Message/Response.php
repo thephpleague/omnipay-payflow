@@ -19,7 +19,32 @@ class Response extends AbstractResponse
             throw new InvalidResponseException;
         }
 
-        parse_str($data, $this->data);
+        $this->data = $this->decodeData($data);
+    }
+
+    /**
+     * Decode absurd name value pair format
+     */
+    public function decodeData($data)
+    {
+        $output = array();
+        while (strlen($data) > 0) {
+            preg_match('/(\w+)(\[(\d+)\])?=/', $data, $matches);
+            $key = $matches[1];
+            $data = substr($data, strlen($matches[0]));
+
+            if (isset($matches[3])) {
+                $value = substr($data, 0, $matches[3]);
+            } else {
+                $next = strpos($data, '&');
+                $value = $next === false ? $data : substr($data, 0, $next);
+            }
+
+            $data = substr($data, strlen($value) + 1);
+            $output[$key] = $value;
+        }
+
+        return $output;
     }
 
     public function isSuccessful()

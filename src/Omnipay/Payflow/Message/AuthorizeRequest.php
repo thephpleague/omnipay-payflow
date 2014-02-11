@@ -91,9 +91,26 @@ class AuthorizeRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data)->send();
+        $httpResponse = $this->httpClient->post(
+            $this->getEndpoint(),
+            null,
+            $this->encodeData($data)
+        )->send();
 
         return $this->response = new Response($this, $httpResponse->getBody());
+    }
+
+    /**
+     * Encode absurd name value pair format
+     */
+    public function encodeData(array $data)
+    {
+        $output = array();
+        foreach ($data as $key => $value) {
+            $output[] = $key.'['.strlen($value).']='.$value;
+        }
+
+        return implode('&', $output);
     }
 
     protected function getEndpoint()

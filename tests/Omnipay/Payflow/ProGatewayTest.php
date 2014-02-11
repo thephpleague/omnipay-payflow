@@ -33,7 +33,7 @@ class ProGatewayTest extends GatewayTestCase
         $response = $this->gateway->authorize($this->options)->send();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals('V19R3EF62FBE', $response->getTransactionReference());
+        $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
     }
 
     public function testAuthorizeError()
@@ -58,7 +58,7 @@ class ProGatewayTest extends GatewayTestCase
         $response = $this->gateway->capture($options)->send();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals('V19R3EF62FBE', $response->getTransactionReference());
+        $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
     }
 
     public function testPurchaseSuccess()
@@ -68,7 +68,7 @@ class ProGatewayTest extends GatewayTestCase
         $response = $this->gateway->purchase($this->options)->send();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals('V19R3EF62FBE', $response->getTransactionReference());
+        $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
     }
 
     public function testPurchaseError()
@@ -93,6 +93,6 @@ class ProGatewayTest extends GatewayTestCase
         $response = $this->gateway->refund($options)->send();
 
         $this->assertTrue($response->isSuccessful());
-        $this->assertEquals('V19R3EF62FBE', $response->getTransactionReference());
+        $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
     }
 }
