@@ -7,7 +7,7 @@ use Omnipay\Payflow\Message\AuthorizeRequest;
 use Omnipay\Payflow\Message\CaptureRequest;
 use Omnipay\Payflow\Message\PurchaseRequest;
 use Omnipay\Payflow\Message\RefundRequest;
-
+use Omnipay\Payflow\Message\CreateCardRequest;
 /**
  * Payflow Pro Class
  *
@@ -89,5 +89,10 @@ class ProGateway extends AbstractGateway
     public function refund(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\Payflow\Message\RefundRequest', $parameters);
+    }
+
+    public function createCard(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\Payflow\Message\CreateCardRequest', $parameters);
     }
 }

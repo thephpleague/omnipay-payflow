@@ -87,26 +87,32 @@ class AuthorizeRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'card');
-        $this->getCard()->validate();
-
+        $this->validate('amount');
         $data = $this->getBaseData();
+
+        if ($this->getCardReference()) {
+            $data['ORIGID'] = $this->getCardReference();
+        } else {
+            $this->validate('card');
+            $this->getCard()->validate();
+
+            $data['ACCT'] = $this->getCard()->getNumber();
+            $data['EXPDATE'] = $this->getCard()->getExpiryDate('my');
+            $data['CVV2'] = $this->getCard()->getCvv();
+            $data['BILLTOFIRSTNAME'] = $this->getCard()->getFirstName();
+            $data['BILLTOLASTNAME'] = $this->getCard()->getLastName();
+            $data['BILLTOSTREET'] = $this->getCard()->getAddress1();
+            $data['BILLTOCITY'] = $this->getCard()->getCity();
+            $data['BILLTOSTATE'] = $this->getCard()->getState();
+            $data['BILLTOZIP'] = $this->getCard()->getPostcode();
+            $data['BILLTOCOUNTRY'] = $this->getCard()->getCountry();
+        }
+        
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
         $data['COMMENT1'] = $this->getDescription();
         $data['COMMENT2'] = $this->getComment2();
         $data['ORDERID'] = $this->getTransactionId();
-
-        $data['ACCT'] = $this->getCard()->getNumber();
-        $data['EXPDATE'] = $this->getCard()->getExpiryDate('my');
-        $data['CVV2'] = $this->getCard()->getCvv();
-        $data['BILLTOFIRSTNAME'] = $this->getCard()->getFirstName();
-        $data['BILLTOLASTNAME'] = $this->getCard()->getLastName();
-        $data['BILLTOSTREET'] = $this->getCard()->getAddress1();
-        $data['BILLTOCITY'] = $this->getCard()->getCity();
-        $data['BILLTOSTATE'] = $this->getCard()->getState();
-        $data['BILLTOZIP'] = $this->getCard()->getPostcode();
-        $data['BILLTOCOUNTRY'] = $this->getCard()->getCountry();
 
         return $data;
     }
