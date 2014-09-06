@@ -10,7 +10,7 @@
         "payflow",
         "payment"
     ],
-    "homepage": "https://github.com/omnipay/payflow",
+    "homepage": "https://github.com/thephpleague/omnipay-payflow",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
         },
         {
             "name": "Omnipay Contributors",
-            "homepage": "https://github.com/omnipay/payflow/contributors"
+            "homepage": "https://github.com/thephpleague/omnipay-payflow/contributors"
         }
     ],
     "autoload": {
