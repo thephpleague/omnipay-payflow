@@ -73,6 +73,16 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('comment2', $value);
     }
 
+    public function getOrigid()
+    {
+        return $this->getParameter('origid');
+    }
+
+    public function setOrigid($value)
+    {
+        return $this->setParameter('origid', $value);
+    }
+
     protected function getBaseData()
     {
         $data = array();
