@@ -9,6 +9,7 @@ use Omnipay\Payflow\Message\PurchaseRequest;
 use Omnipay\Payflow\Message\RefundRequest;
 use Omnipay\Payflow\Message\CreateCardRequest;
 use Omnipay\Payflow\Message\InquiryRequest;
+
 /**
  * Payflow Pro Class
  *
