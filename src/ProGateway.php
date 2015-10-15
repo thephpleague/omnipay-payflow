@@ -90,4 +90,9 @@ class ProGateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\Payflow\Message\RefundRequest', $parameters);
     }
+
+    public function void(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\Payflow\Message\VoidRequest', $parameters);
+    }
 }
