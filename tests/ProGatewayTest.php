@@ -95,4 +95,18 @@ class ProGatewayTest extends GatewayTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
     }
+
+    public function testVoid()
+    {
+        $options = array(
+            'transactionReference' => 'abc123',
+        );
+
+        $this->setMockHttpResponse('PurchaseSuccess.txt');
+
+        $response = $this->gateway->void($options)->send();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
+    }
 }
