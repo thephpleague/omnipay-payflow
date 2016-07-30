@@ -3,7 +3,7 @@
 namespace Omnipay\Payflow\Message;
 
 /**
- * Payflow Purchase Request
+ * Payflow Fetch Transaction Request
  *
  * ### Example
  *
@@ -44,9 +44,31 @@ namespace Omnipay\Payflow\Message;
  *     $sale_id = $response->getTransactionReference();
  *     echo "Transaction reference = " . $sale_id . "\n";
  * }
+ *
+ * // Fetch the purchase
+ * $transaction = $gateway->fetchTransaction(array(
+ *     'transactionReference'     => $sale_id,
+ * ));
+ * $response = $transaction->send();
+ * if ($response->isSuccessful()) {
+ *     echo "Fetch transaction was successful!\n";
+ *     $data = $response->getData();
+ *     echo "Transaction Data =\n" . print_r($data, true) . "\n";
+ * }
  * </code>
  */
-class PurchaseRequest extends AuthorizeRequest
+class FetchTransactionRequest extends AuthorizeRequest
 {
-    protected $action = 'S';
+    protected $action = 'I';
+
+    public function getData()
+    {
+        $data = $this->getBaseData();
+
+        $data['TENDER'] = 'C';
+        $data['VERBOSITY'] = 'HIGH';
+        $data['ORIGID'] = $this->getTransactionReference();
+
+        return $data;
+    }
 }
