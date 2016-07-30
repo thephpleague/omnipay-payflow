@@ -231,6 +231,7 @@ class AuthorizeRequest extends AbstractRequest
 
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
+        $data['CURRENCY'] = $this->getCurrency();
         $data['COMMENT1'] = $this->getDescription();
         $data['COMMENT2'] = $this->getComment2();
         $data['ORDERID'] = $this->getTransactionId();
