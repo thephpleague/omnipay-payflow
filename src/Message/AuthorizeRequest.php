@@ -6,6 +6,47 @@ use Omnipay\Common\Message\AbstractRequest;
 
 /**
  * Payflow Authorize Request
+ *
+ * ### Example
+ *
+ * <code>
+ * // Create a gateway for the Payflow pro Gateway
+ * // (routes to GatewayFactory::create)
+ * $gateway = Omnipay::create('Payflow_Pro');
+ *
+ * // Initialise the gateway
+ * $gateway->initialize(array(
+ *     'username'       => $myusername,
+ *     'password'       => $mypassword,
+ *     'vendor'         => $mymerchantid,
+ *     'partner'        => $PayPalPartner,
+ *     'testMode'       => true, // Or false for live transactions.
+ * ));
+ *
+ * // Create a credit card object
+ * // This card can be used for testing.
+ * $card = new CreditCard(array(
+ *             'firstName'    => 'Example',
+ *             'lastName'     => 'Customer',
+ *             'number'       => '4242424242424242',
+ *             'expiryMonth'  => '01',
+ *             'expiryYear'   => '2020',
+ *             'cvv'          => '123',
+ * ));
+ *
+ * // Do an authorize transaction on the gateway
+ * $transaction = $gateway->authorize(array(
+ *     'amount'                   => '10.00',
+ *     'currency'                 => 'AUD',
+ *     'card'                     => $card,
+ * ));
+ * $response = $transaction->send();
+ * if ($response->isSuccessful()) {
+ *     echo "Authorize transaction was successful!\n";
+ *     $sale_id = $response->getTransactionReference();
+ *     echo "Transaction reference = " . $sale_id . "\n";
+ * }
+ * </code>
  */
 class AuthorizeRequest extends AbstractRequest
 {
@@ -13,41 +54,105 @@ class AuthorizeRequest extends AbstractRequest
     protected $testEndpoint = 'https://pilot-payflowpro.paypal.com';
     protected $action = 'A';
 
+    /**
+     * Get the username.
+     *
+     * This is the ID that you specified when you got the Payflow account.
+     *
+     * @return string
+     */
     public function getUsername()
     {
         return $this->getParameter('username');
     }
 
+    /**
+     * Set the username.
+     *
+     * This is the ID that you specified when you got the Payflow account.
+     *
+     * @param string $value
+     * @return AuthorizeRequest provides a fluent interface.
+     */
     public function setUsername($value)
     {
         return $this->setParameter('username', $value);
     }
 
+    /**
+     * Get the password.
+     *
+     * This is the password that you specified when you got the Payflow account.
+     *
+     * @return string
+     */
     public function getPassword()
     {
         return $this->getParameter('password');
     }
 
+    /**
+     * Set the password.
+     *
+     * This is the password that you specified when you got the Payflow account.
+     *
+     * @param string $value
+     * @return AuthorizeRequest provides a fluent interface.
+     */
     public function setPassword($value)
     {
         return $this->setParameter('password', $value);
     }
 
+    /**
+     * Get the vendor.
+     *
+     * The ID that you specified when you got the Payflow account, the same as the username unless you
+     * have created additional users on the account. That is, the merchant login ID for the account.
+     *
+     * @return string
+     */
     public function getVendor()
     {
         return $this->getParameter('vendor');
     }
 
+    /**
+     * Set the vendor.
+     *
+     * The ID that you specified when you got the Payflow account, the same as the username unless you
+     * have created additional users on the account. That is, the merchant login ID for the account.
+     *
+     * @param string $value
+     * @return AuthorizeRequest provides a fluent interface.
+     */
     public function setVendor($value)
     {
         return $this->setParameter('vendor', $value);
     }
 
+    /**
+     * Get the partner.
+     *
+     * The Payflow partner. This may be PayPal, or if an account was provided by an authorized PayPal
+     * reseller, who registered a Payflow user, then the ID provided by the reseller is used.
+     *
+     * @return string
+     */
     public function getPartner()
     {
         return $this->getParameter('partner');
     }
 
+    /**
+     * Set the partner.
+     *
+     * The Payflow partner. This may be PayPal, or if an account was provided by an authorized PayPal
+     * reseller, who registered a Payflow user, then the ID provided by the reseller is used.
+     *
+     * @param string $value
+     * @return AuthorizeRequest provides a fluent interface.
+     */
     public function setPartner($value)
     {
         return $this->setParameter('partner', $value);
@@ -73,11 +178,17 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('comment2', $value);
     }
 
+    /**
+     * @deprecated
+     */
     public function getOrigid()
     {
         return $this->getParameter('origid');
     }
 
+    /**
+     * @deprecated
+     */
     public function setOrigid($value)
     {
         return $this->setParameter('origid', $value);
@@ -117,7 +228,7 @@ class AuthorizeRequest extends AbstractRequest
             $data['BILLTOZIP'] = $this->getCard()->getPostcode();
             $data['BILLTOCOUNTRY'] = $this->getCard()->getCountry();
         }
-        
+
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
         $data['COMMENT1'] = $this->getDescription();
