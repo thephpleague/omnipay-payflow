@@ -178,6 +178,16 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('comment2', $value);
     }
 
+    public function getOrderId()
+    {
+        return $this->getParameter('orderid');
+    }
+
+    public function setOrderId($value)
+    {
+        return $this->setParameter('orderid', $value);
+    }
+
     /**
      * @deprecated
      */
@@ -234,7 +244,18 @@ class AuthorizeRequest extends AbstractRequest
         $data['CURRENCY'] = $this->getCurrency();
         $data['COMMENT1'] = $this->getDescription();
         $data['COMMENT2'] = $this->getComment2();
-        $data['ORDERID'] = $this->getTransactionId();
+        $data['ORDERID'] = $this->getOrderId();
+
+        $data['BILLTOEMAIL'] = $this->getCard()->getEmail();
+        $data['BILLTOPHONENUM'] = $this->getCard()->getBillingPhone();
+
+        $items = $this->getItems();
+        if (!empty($items)) {
+            foreach ($items as $key => $item) {
+                $data['L_NAME' . $key] = $item->getName();
+                $data['L_QTY' . $key] = $item->getQuantity();
+            }
+        }
 
         return $data;
     }
