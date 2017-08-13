@@ -46,7 +46,7 @@ class AuthorizeRequestTest extends TestCase
                 'description' => 'things',
                 'comment2' => 'more things',
                 'card' => $card,
-                'transactionId' => '123',
+                'orderid' => '123',
                 'ponum' => 'abcdefghijklmnopqrstuvwxy',
             )
         );
