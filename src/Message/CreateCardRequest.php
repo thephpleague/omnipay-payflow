@@ -26,7 +26,7 @@ namespace Omnipay\Payflow\Message;
  * $card = new CreditCard(array(
  *             'firstName'    => 'Example',
  *             'lastName'     => 'Customer',
- *             'number'       => '4242424242424242',
+ *             'number'       => '4111111111111111',
  *             'expiryMonth'  => '01',
  *             'expiryYear'   => '2020',
  *             'cvv'          => '123',
