@@ -54,6 +54,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isRedirect());
         $this->assertEquals('A10A6AE7042E', $response->getTransactionReference());
         $this->assertEquals('Approved', $response->getMessage());
+        $this->assertEquals(0, $response->getCode());
     }
 
     public function testPurchaseFailure()
@@ -65,6 +66,19 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getTransactionReference());
         $this->assertSame('User authentication failed', $response->getMessage());
+        $this->assertEquals(1, $response->getCode());
+    }
+
+    public function testPurchaseDecline()
+    {
+        $httpResponse = $this->getMockHttpResponse('PurchaseDecline.txt');
+        $response = new Response($this->getMockRequest(), $httpResponse->getBody());
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertEquals('A10AA63244D1', $response->getTransactionReference());
+        $this->assertEquals('Declined', $response->getMessage());
+        $this->assertEquals(12, $response->getCode());
     }
 
     public function testCreateCard()

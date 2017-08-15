@@ -68,4 +68,9 @@ class Response extends AbstractResponse
             ? $this->getTransactionReference()
             : null;
     }
+
+    public function getCode()
+    {
+        return isset($this->data['RESULT']) ? (int) $this->data['RESULT'] : null;
+    }
 }
