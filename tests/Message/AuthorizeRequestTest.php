@@ -31,6 +31,12 @@ class AuthorizeRequestTest extends TestCase
         $this->assertSame('bar', $this->request->getComment2());
     }
 
+    public function testPoNum()
+    {
+        $this->assertSame($this->request, $this->request->setPoNum('abcdefghijklmnopqrstuvwxy'));
+        $this->assertSame('abcdefghijklmnopqrstuvwxy', $this->request->getPoNum());
+    }
+
     public function testGetData()
     {
         $card = $this->getValidCard();
@@ -40,7 +46,8 @@ class AuthorizeRequestTest extends TestCase
                 'description' => 'things',
                 'comment2' => 'more things',
                 'card' => $card,
-                'transactionId' => '123',
+                'orderid' => '123',
+                'ponum' => 'abcdefghijklmnopqrstuvwxy',
             )
         );
 
@@ -51,6 +58,7 @@ class AuthorizeRequestTest extends TestCase
         $this->assertSame('things', $data['COMMENT1']);
         $this->assertSame('more things', $data['COMMENT2']);
         $this->assertSame('123', $data['ORDERID']);
+        $this->assertSame('abcdefghijklmnopqrstuvwxy', $data['PONUM']);
     }
 
     public function testEncodeData()

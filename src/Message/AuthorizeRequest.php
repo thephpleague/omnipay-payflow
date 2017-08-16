@@ -188,6 +188,16 @@ class AuthorizeRequest extends AbstractRequest
         return $this->setParameter('orderid', $value);
     }
 
+    public function setPoNum($value)
+    {
+        return $this->setParameter('ponum', $value);
+    }
+
+    public function getPoNum()
+    {
+        return $this->getParameter('ponum');
+    }
+
     /**
      * @deprecated
      */
@@ -245,6 +255,7 @@ class AuthorizeRequest extends AbstractRequest
         $data['COMMENT1'] = $this->getDescription();
         $data['COMMENT2'] = $this->getComment2();
         $data['ORDERID'] = $this->getOrderId();
+        $data['PONUM'] = $this->getPoNum();
 
         $data['BILLTOEMAIL'] = $this->getCard()->getEmail();
         $data['BILLTOPHONENUM'] = $this->getCard()->getBillingPhone();
