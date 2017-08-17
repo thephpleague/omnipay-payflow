@@ -61,4 +61,11 @@ class Response extends AbstractResponse
     {
         return isset($this->data['RESPMSG']) ? $this->data['RESPMSG'] : null;
     }
+
+    public function getCardReference()
+    {
+        return $this->request instanceof AuthorizeRequest || $this->request instanceof CreateCardRequest
+            ? $this->getTransactionReference()
+            : null;
+    }
 }
