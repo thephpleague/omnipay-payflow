@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Connection: close
+Server: VPS-3.033.00
+Date: Tue, 17 Aug 2017 02:34:58 GMT
+Content-type: text/namevalue
+Content-length: 44
+
+RESULT=0&PNREF=A10AA633AB30&RESPMSG=Approved

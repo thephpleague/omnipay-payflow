@@ -2,6 +2,7 @@
 
 namespace Omnipay\Payflow\Message;
 
+use Mockery as m;
 use Omnipay\Tests\TestCase;
 
 class ResponseTest extends TestCase
@@ -64,5 +65,21 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isRedirect());
         $this->assertNull($response->getTransactionReference());
         $this->assertSame('User authentication failed', $response->getMessage());
+    }
+
+    public function testCreateCard()
+    {
+        $httpResponse = $this->getMockHttpResponse('CreateCardSuccess.txt');
+
+        /* @var \Omnipay\Payflow\Message\CreateCardRequest $request */
+        $request = m::mock('\Omnipay\Payflow\Message\CreateCardRequest');
+
+        $response = new Response($request, $httpResponse->getBody());
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertEquals('A10AA633AB30', $response->getCardReference());
+        $this->assertEquals('Approved', $response->getMessage());
+        $this->assertEquals(0, $response->getCode());
     }
 }
