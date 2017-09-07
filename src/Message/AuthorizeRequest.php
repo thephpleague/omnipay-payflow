@@ -222,6 +222,12 @@ class AuthorizeRequest extends AbstractRequest
         $data['PWD'] = $this->getPassword();
         $data['VENDOR'] = $this->getVendor();
         $data['PARTNER'] = $this->getPartner();
+        if ($this->getDescription()) {
+            $data['COMMENT1'] = $this->getDescription();
+        }
+        if ($this->getComment2()) {
+            $data['COMMENT2'] = $this->getComment2();
+        }
 
         return $data;
     }
@@ -252,8 +258,6 @@ class AuthorizeRequest extends AbstractRequest
         $data['TENDER'] = 'C';
         $data['AMT'] = $this->getAmount();
         $data['CURRENCY'] = $this->getCurrency();
-        $data['COMMENT1'] = $this->getDescription();
-        $data['COMMENT2'] = $this->getComment2();
         $data['ORDERID'] = $this->getOrderId();
         $data['PONUM'] = $this->getPoNum();
 
