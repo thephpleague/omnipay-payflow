@@ -82,8 +82,12 @@ class PurchaseRequest extends AuthorizeRequest
 
     public function getReferenceSaleData()
     {
-        $this->validate('transactionReference');
+        $this->validate('transactionReference', 'amount');
+
+        $data = $this->getBaseData();
+        $data['AMT'] = $this->getAmount();
         $data['ORIGID'] = $this->getTransactionReference();
+        $data['TENDER'] = 'C';
 
         return $data;
     }
