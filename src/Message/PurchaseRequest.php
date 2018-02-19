@@ -72,7 +72,8 @@ class PurchaseRequest extends AuthorizeRequest
 
     public function getData()
     {
-        if ($this->parameters->get('transactionReference')) {
+        $realCardExists = ($this->getCard() || $this->getCardReference());
+        if ($this->parameters->get('transactionReference') && !$realCardExists) {
             return $this->getReferenceSaleData();
         }
 
