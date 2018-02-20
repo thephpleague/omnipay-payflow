@@ -75,7 +75,7 @@ class ProGatewayTest extends GatewayTestCase
     {
         $options = array(
             'amount' => '10.00',
-            'transactionReference' => 'abc123',
+            'cardReference' => 'abc123',
         );
 
         $this->setMockHttpResponse('PurchaseSuccess.txt');

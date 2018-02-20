@@ -36,8 +36,8 @@ namespace Omnipay\Payflow\Message;
  * // $reference_id can be the transaction reference from a previous authorization, credit, capture, sale, voice auth,
  * // or void.
  * $transaction = $gateway->purchase(array(
- *     'amount'                   => '10.00',
- *     'transactionReference'     => $reference_id,
+ *     'amount'        => '10.00',
+ *     'cardReference' => $reference_id,
  * ));
  *
  * // 2. Sale (with card data) example:
@@ -69,25 +69,4 @@ namespace Omnipay\Payflow\Message;
 class PurchaseRequest extends AuthorizeRequest
 {
     protected $action = 'S';
-
-    public function getData()
-    {
-        if ($this->parameters->get('transactionReference')) {
-            return $this->getReferenceSaleData();
-        }
-
-        return parent::getData();
-    }
-
-    public function getReferenceSaleData()
-    {
-        $this->validate('transactionReference', 'amount');
-
-        $data = $this->getBaseData();
-        $data['AMT'] = $this->getAmount();
-        $data['ORIGID'] = $this->getTransactionReference();
-        $data['TENDER'] = 'C';
-
-        return $data;
-    }
 }
