@@ -261,8 +261,10 @@ class AuthorizeRequest extends AbstractRequest
         $data['ORDERID'] = $this->getOrderId();
         $data['PONUM'] = $this->getPoNum();
 
-        $data['BILLTOEMAIL'] = $this->getCard()->getEmail();
-        $data['BILLTOPHONENUM'] = $this->getCard()->getBillingPhone();
+        if ($this->getCard()) {
+            $data['BILLTOEMAIL'] = $this->getCard()->getEmail();
+            $data['BILLTOPHONENUM'] = $this->getCard()->getBillingPhone();
+        }
 
         $items = $this->getItems();
         if (!empty($items)) {
