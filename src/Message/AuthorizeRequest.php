@@ -239,6 +239,9 @@ class AuthorizeRequest extends AbstractRequest
 
         if ($this->getCardReference()) {
             $data['ORIGID'] = $this->getCardReference();
+            if ($this->getCard()) {
+                $data['CVV2'] = $this->getCard()->getCvv();
+            }
         } else {
             $this->validate('card');
             $this->getCard()->validate();
