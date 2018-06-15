@@ -282,13 +282,14 @@ class AuthorizeRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post(
+        $httpResponse = $this->httpClient->request(
+            'POST',
             $this->getEndpoint(),
-            null,
+            [],
             $this->encodeData($data)
-        )->send();
+        );
 
-        return $this->response = new Response($this, $httpResponse->getBody());
+        return $this->response = new Response($this, $httpResponse->getBody()->getContents());
     }
 
     /**
